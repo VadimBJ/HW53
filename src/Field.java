@@ -1,23 +1,24 @@
 import java.util.concurrent.TimeUnit;
 
 public class Field {
-  public static final int MIN_X = -15;
-  public static final int MAX_X = 15;
-  public static final int MIN_Y = -15;
-  public static final int MAX_Y = 15;
+  public static final int MIN_X = -16;
+  public static final int MAX_X = 16;
+  public static final int MIN_Y = -16;
+  public static final int MAX_Y = 16;
   public static int fieldX;
   public static int fieldY;
   public static int center;
   public char[][] charArray;
-  private int x;
-  private int y;
+  private final int x;
+  private final int y;
 
-  public Field() {
+  public Field(Point point) {
     fieldX = MAX_X - MIN_X;
     fieldY = MAX_Y - MIN_Y;
     center = fieldX / 2;
     charArray = new char[Field.fieldY][Field.fieldX];
-    ;
+    x = center + point.getX();
+    y = center - point.getY();
   }
 
   public void showField() {
@@ -48,7 +49,7 @@ public class Field {
         }
       }
       System.out.print("░");
-      TimeUnit.MILLISECONDS.sleep(50);
+      TimeUnit.MILLISECONDS.sleep(20);
     }
     charArray[0][center] = '△';
     charArray[0][center + 1] = 'Y';
@@ -57,16 +58,16 @@ public class Field {
     charArray[center - 1][center + 1] = '0';
   }
 
-  public void placePoint(Point point, int radius) {
-    int x = center + point.getX();
-    int y = center - point.getY();
-    charArray[y][x] = '●';
+  public void placePoint() {
+        charArray[y][x] = '●';
   }
 
-  public String checkPointCircle(int radius, Point point) {
-    String result = "";
-    int testPoint = (int) Math.round((Math.sqrt((x * x) + (y * y))));
-    if (testPoint < radius) {
+  public String checkPointCircle(Point point, int radius) {
+    String result;
+    int x1 = point.getX();
+    int y1 = point.getY();
+    int testPoint = (int) (Math.sqrt((x1 * x1) + (y1 * y1)));
+    if ((x1 == 0 && y1 == 0) || testPoint < radius) {
       result = "и попадает внутрь окружности с радиусом " + radius;
     } else if (testPoint > radius) {
       result = "и находится вне окружности с радиусом " + radius;
@@ -77,33 +78,30 @@ public class Field {
   }
 
   public String checkPointQuarter(Point point) {
-    String result = "";
-    x = point.getX();
-    y = point.getY();
     if (x == center && y == center) {
-      result = String.format("Точка с координатами (%d, %d) находится в центре координат", x, y);
+      return String.format("Точка с координатами (%d, %d) находится в центре координат",
+          point.getX(), point.getY());
     } else if (x == center) {
-      result = "попали в Y";
+      return String.format("Точка с координатами (%d, %d) находится на оси Y",
+          point.getX(), point.getY());
     } else if (y == center) {
-      result = "попали в X";
+      return String.format("Точка с координатами (%d, %d) находится на оси X",
+          point.getX(), point.getY());
     }
     if (x > center && y < center) {
-      result = String.format("Точка с координатами (%d, %d) находится в I координатной четверти",
-          x, y);
+      return String.format("Точка с координатами (%d, %d) находится в I координатной четверти",
+          point.getX(), point.getY());
     }
     if (x < center && y < center) {
-      result = String.format("Точка с координатами (%d, %d) находится во II координатной четверти",
-          x, y);
+      return String.format("Точка с координатами (%d, %d) находится во II координатной четверти",
+          point.getX(), point.getY());
     }
-    if (x < center && y > center) {
-      result = String.format("Точка с координатами (%d, %d) находится в III координатной четверти",
-          x, y);
+    if (x < center) {
+      return String.format("Точка с координатами (%d, %d) находится в III координатной четверти",
+          point.getX(), point.getY());
     }
-    if (x > center && y > center) {
-      result = String.format("Точка с координатами (%d, %d) находится в IV координатной четверти",
-          x, y);
-    }
-    return result;
+    return String.format("Точка с координатами (%d, %d) находится в IV координатной четверти",
+        point.getX(), point.getY());
   }
 
   public void buildCircle(int radius) {
@@ -119,6 +117,4 @@ public class Field {
       System.out.print("░");
     }
   }
-
-
 }
