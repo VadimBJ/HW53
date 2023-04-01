@@ -13,30 +13,44 @@ public class Runner {
 
   public static void main(String[] args) throws IOException, InterruptedException, AWTException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    Field field = new Field();
-    messagePrint(CYAN + "Укажите координаты Вашей точки через запятую\n");
-    messagePrint("Значение X и Y должны находиться в пределах от "
-                 + (Field.MIN_X + 1) + " до " + (Field.MAX_X - 1));
-    messagePrint(RESET + "\nВведите координаты [x,y]: ");
-    Point point = Point.parse(br);
-    System.out.println();
-    messagePrint(CYAN + "Укажите радиус окружности с центром в точке O (0, 0)\n");
-    messagePrint("Значение должно находиться в пределах от 1 до " + (Field.center - 1));
-    messagePrint(RESET + "\nВведите радиус R: ");
-    int radius = readIntLimited(1, Field.center - 1);
-    System.out.println();
-    System.out.print(CYAN + "\nПроводим необходимые вычисления" + RESET + " [");
-    field.buildField();
-    field.buildCircle(radius);
-    field.placePoint(point, radius);
-    System.out.println("]");
-    System.out.println();
-    System.out.println(GREEN + "... нажмите ENTER для просмотра результата ..." + RESET);
-    br.readLine();
-    clearScreen();
-    System.out.println(CYAN+field.checkPointQuarter(point));
-    System.out.println(field.checkPointCircle(radius, point)+RESET);
-    field.showField();
+    int exit;
+    do {
+      messagePrint(CYAN + "Укажите координаты Вашей точки через запятую\n");
+      messagePrint("Значение X и Y должны находиться в пределах от "
+                   + (Field.MIN_X + 1) + " до " + (Field.MAX_X - 1));
+      messagePrint(RESET + "\nВведите координаты [x,y]: ");
+      String coordinates = br.readLine();
+      Point point = Point.parse(coordinates);
+      Field field = new Field(point);
+      System.out.println();
+      messagePrint(CYAN + "Укажите радиус окружности с центром в точке O (0, 0)\n");
+      messagePrint("Значение должно находиться в пределах от 1 до " + (Field.center - 2));
+      messagePrint(RESET + "\nВведите радиус R: ");
+      int radius = readIntLimited(1, Field.center - 2);
+      System.out.println();
+      System.out.print(CYAN + "\nПроводим необходимые вычисления" + RESET + " [");
+      field.buildField();
+      field.buildCircle(radius);
+      field.placePoint();
+      System.out.println("]");
+      System.out.println();
+      System.out.println(GREEN + "... нажмите ENTER для просмотра результата ..." + RESET);
+      br.readLine();
+      clearScreen();
+      TimeUnit.MILLISECONDS.sleep(200);
+      System.out.println(CYAN + field.checkPointQuarter(point));
+      System.out.println(field.checkPointCircle(point, radius) + RESET);
+      field.showField();
+
+      System.out.print("""
+          Хотите повторить?
+           1. Да!
+           2. Нет
+           ➥""");
+      exit = readIntLimited(1, 2);
+      clearScreen();
+      TimeUnit.MILLISECONDS.sleep(500);
+    } while (exit == 1);
   }
 
   public static int readIntLimited(int min, int max) throws IOException {
@@ -67,10 +81,9 @@ public class Runner {
     robot.keyRelease(KeyEvent.VK_CONTROL);
   }
 
-  public static void messagePrint(String massage) throws InterruptedException {
+  public static void messagePrint(String massage) {
     for (int i = 0; i < massage.length(); i++) {
       System.out.print(massage.charAt(i));
-      TimeUnit.MILLISECONDS.sleep(5);
     }
   }
 
