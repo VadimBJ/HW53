@@ -6,7 +6,7 @@ public class Point {
   private final int x;
   private final int y;
 
-  public Point(int x, int y) {
+  private Point(int x, int y) {
     this.x = x;
     this.y = y;
   }
@@ -19,24 +19,23 @@ public class Point {
     return y;
   }
 
-  // этот метод прочитает точку с клавиатуры
-  public static Point read(BufferedReader bufferedReader) throws IOException {
-    System.out.println("Введите координаты точки:");
-    String coordinates = bufferedReader.readLine();
-    return parse(coordinates);
+  public static Point parse(BufferedReader br) throws IOException {
+    String[] coord = br.readLine().split(",");
+    if (coord.length == 0 || coord.length > 2 || coord[0].trim().isEmpty() || coord[1].trim().isEmpty()) {
+      throw new IllegalArgumentException(
+          "Неправильный формат координат, введите два целых числа через запятую!");
+    }
+    int x = Integer.parseInt(coord[0].trim());
+    int y = Integer.parseInt(coord[1].trim());
+    if (x < Field.MIN_X + 1 || x > Field.MAX_X - 1) {
+      throw new IllegalArgumentException(
+          "Неверное значение Х: "+x);
+    }    if (y < Field.MIN_Y + 1 || y > Field.MAX_Y - 1) {
+      throw new IllegalArgumentException(
+          "Неверное значение Y: "+y);
+    }
+      return new Point(x, y);
+
   }
 
-  // превращаем строку вида "x, y" в координаты
-  public static Point parse(String coordinates) {
-    int sepIndex = coordinates.indexOf(',');
-    if (sepIndex == -1) {
-      throw new IllegalArgumentException(
-          "Неправильный формат координат, введите два целых числа через запятую: " + coordinates);
-    }
-    int x = Integer.parseInt(coordinates.substring(0, sepIndex)); // "x, y" -> "x" -> x
-    // "   abc  ".trim() --> "abc"
-    // "x, y" -> " y" -> "y" -> y
-    int y = Integer.parseInt(coordinates.substring(sepIndex + 1).trim());
-    return new Point(x, y);
-  }
 }
