@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-
 public class Point {
 
   private final int x;
@@ -19,14 +16,14 @@ public class Point {
     return y;
   }
 
-  public static Point parse(BufferedReader br) throws IOException {
-    String[] coord = br.readLine().split(",");
-    if (coord.length == 0 || coord.length > 2 || coord[0].trim().isEmpty() || coord[1].trim().isEmpty()) {
+  public static Point parse(String coordinates) {
+    String[] coordXY = coordinates.split(",");
+    if (coordXY.length == 0 || coordXY.length > 2 || coordXY[0].trim().isEmpty() || coordXY[1].trim().isEmpty()) {
       throw new IllegalArgumentException(
           "Неправильный формат координат, введите два целых числа через запятую!");
     }
-    int x = Integer.parseInt(coord[0].trim());
-    int y = Integer.parseInt(coord[1].trim());
+    int x = Integer.parseInt(coordXY[0].trim());
+    int y = Integer.parseInt(coordXY[1].trim());
     if (x < Field.MIN_X + 1 || x > Field.MAX_X - 1) {
       throw new IllegalArgumentException(
           "Неверное значение Х: "+x);
