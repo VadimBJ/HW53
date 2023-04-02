@@ -10,21 +10,20 @@ public class Runner {
   public static final String RESET = "\u001B[0m";
   public static final String GREEN = "\u001B[32m";
 
-
   public static void main(String[] args) throws IOException, InterruptedException, AWTException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     int exit;
     do {
       messagePrint(CYAN + "Укажите координаты Вашей точки через запятую\n");
-      messagePrint("Значение X и Y должны находиться в пределах от "
-                   + (Field.MIN_X + 1) + " до " + (Field.MAX_X - 1));
+      messagePrint("Значение X и Y должны быть целыми и находиться в пределах от "
+          + (Field.MIN_X + 1) + " до " + (Field.MAX_X - 1));
       messagePrint(RESET + "\nВведите координаты [x,y]: ");
       String coordinates = br.readLine();
       Point point = Point.parse(coordinates);
       Field field = new Field(point);
       System.out.println();
       messagePrint(CYAN + "Укажите радиус окружности с центром в точке O (0, 0)\n");
-      messagePrint("Значение должно находиться в пределах от 1 до " + (Field.center - 2));
+      messagePrint("Значение должно быть целым и находиться в пределах от 1 до " + (Field.center - 2));
       messagePrint(RESET + "\nВведите радиус R: ");
       int radius = readIntLimited(1, Field.center - 2);
       System.out.println();
@@ -86,6 +85,4 @@ public class Runner {
       System.out.print(massage.charAt(i));
     }
   }
-
-
 }

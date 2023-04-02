@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FieldTest {
 
-  @DisplayName("x=0 y=0 R=10")
+  @DisplayName("x=0 y=0 R=1")
   @Test
   public void zeroXzeroY() throws InterruptedException {
     String coordXY = "0, 0";
-    int radius = 10;
+    int radius = 1;
 
     Point point = Point.parse(coordXY);
     Field field = new Field(point);

@@ -16,7 +16,7 @@ public class Field {
     fieldX = MAX_X - MIN_X;
     fieldY = MAX_Y - MIN_Y;
     center = fieldX / 2;
-    charArray = new char[Field.fieldY][Field.fieldX];
+    charArray = new char[fieldY][fieldX];
     x = center + point.getX();
     y = center - point.getY();
   }
@@ -53,13 +53,13 @@ public class Field {
     }
     charArray[0][center] = '△';
     charArray[0][center + 1] = 'Y';
-    charArray[center][fieldX - 1] = '▷';
-    charArray[center - 1][fieldX - 1] = 'X';
+    charArray[center][fieldX-1] = '▷';
+    charArray[center - 1][fieldX-1] = 'X';
     charArray[center - 1][center + 1] = '0';
   }
 
   public void placePoint() {
-        charArray[y][x] = '●';
+    charArray[y][x] = '●';
   }
 
   public String checkPointCircle(Point point, int radius) {

@@ -26,13 +26,12 @@ public class Point {
     int y = Integer.parseInt(coordXY[1].trim());
     if (x < Field.MIN_X + 1 || x > Field.MAX_X - 1) {
       throw new IllegalArgumentException(
-          "Неверное значение Х: "+x);
-    }    if (y < Field.MIN_Y + 1 || y > Field.MAX_Y - 1) {
-      throw new IllegalArgumentException(
-          "Неверное значение Y: "+y);
+          "Неверное значение Х: " + x);
     }
-      return new Point(x, y);
-
+    if (y < Field.MIN_Y + 1 || y > Field.MAX_Y - 1) {
+      throw new IllegalArgumentException(
+          "Неверное значение Y: " + y);
+    }
+    return new Point(x, y);
   }
-
 }
